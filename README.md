@@ -85,16 +85,16 @@ OPENAI_API_KEY = sk-xxxx
 
 7. Deploy and grab your live URL!
 
-🖥️ API Usage
+**🖥️ API Usage**
 /search-price (POST)
-**Example:**
+Example:
 
 
 curl -X POST "http://localhost:8000/search-price" \
   -H "Content-Type: application/json" \
   -d '{"country": "US", "query": "iPhone 16 Pro, 128GB"}'
 
-**Response:**
+Response:
 
 {
   "results": [
@@ -125,7 +125,7 @@ Response:
 }
 
 
-📝 Notes / Known Limitations
+((📝 Notes / Known Limitations**
 Some e-commerce sites block bots/scraping—results may use sample/demo data.
 
 The AI feature depends on a working OpenAI API key.
@@ -134,20 +134,25 @@ Product accuracy is only as good as the data available.
 
 For Indian queries, only Flipkart is supported currently.
 
-📸 Screenshots
+**📸 Screenshots**
 
 NOTE: Results are not accurate, illustrated just for the purpose of demo/submission
 
 ![alt text](image-1.png)
-c:\price_comparator\UI.jpg c:\price_comparator\img1.jpg c:\price_comparator\img2.jpg c:\price_comparator\img3.jpg c:\price_comparator\img4.jpg c:\price_comparator\img5.jpg
+![img1](https://github.com/user-attachments/assets/5d3b5cf8-2e2d-4a31-95cf-56545a36a9e8)
+![img2](https://github.com/user-attachments/assets/52f14b8f-3f05-4eda-a1f5-0a54ccda2adc)
+![img3](https://github.com/user-attachments/assets/68183377-7b3b-44e8-9944-3563f776812b)
+![img4](https://github.com/user-attachments/assets/aae76e98-aa84-49b4-b385-2193b3a0ddd5)
+![img5](https://github.com/user-attachments/assets/9cc9a82d-cf88-4d76-a3eb-3935b620144e)
 
-👩‍💻 Author
+
+
+**👩‍💻 Author**
 Lakshmi Vyshnavi Ummadisetti
 
-📄 License
-MIT
 
-🙏 Acknowledgements
+
+**🙏 Acknowledgements**
 OpenAI GPT API for AI-powered product suggestions
 
 FastAPI docs and community
