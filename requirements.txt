@@ -1,6 +1,7 @@
 openai
 fastapi
 uvicorn
+requests
 playwright
 beautifulsoup4
 lxml
