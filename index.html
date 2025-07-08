@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Price Comparator Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 2em auto; background: #f7f7f7;}
+    h1 { color: #1565c0; }
+    .box { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0002; padding: 2em;}
+    label { display:block; margin:1em 0 .3em;}
+    input, select { width:100%; padding:.6em; margin-bottom:1em;}
+    button { background:#1976d2; color:#fff; border:0; padding:.7em 2em; border-radius:5px; font-size:1em; cursor:pointer;}
+    pre { background: #eee; padding:1em; border-radius:8px; overflow:auto;}
+    .footer {text-align:center; color:#999; margin-top:2em;}
+    #aiSuggestBtn { margin-top: 10px; }
+    #aiSuggestion { margin-top: 1em; font-weight: bold; color: #1565c0; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Price Comparator</h1>
+    <form id="compareForm">
+      <label for="country">Country:</label>
+      <select id="country" required>
+        <option value="US">United States</option>
+        <option value="IN">India</option>
+      </select>
+      <label for="query">Product Search:</label>
+      <input id="query" placeholder="e.g. iPhone 16 Pro, 128GB" required />
+      <button type="submit">Compare Prices</button>
+    </form>
+    <div id="results"></div>
+    <button id="aiSuggestBtn" style="display:none;">AI Suggest Best Value</button>
+    <div id="aiSuggestion"></div>
+  </div>
+  <div class="footer">Made for demo - API powered by FastAPI</div>
+  <script>
+    let lastResults = [];
+
+    document.getElementById('compareForm').onsubmit = async function(e) {
+      e.preventDefault();
+      document.getElementById('results').innerHTML = "Loading...";
+      document.getElementById('aiSuggestion').innerText = "";
+      document.getElementById('aiSuggestBtn').style.display = "none";
+      const country = document.getElementById('country').value;
+      const query = document.getElementById('query').value;
+      const resp = await fetch('/search-price', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({country, query})
+      });
+      let data = await resp.json();
+      lastResults = data.results || [];
+      if (lastResults.length) {
+        let html = `<h3>Results:</h3><ul>`;
+        lastResults.forEach(item => {
+          html += `<li>
+            <b>${item.productName}</b> 
+            <br>Price: ${item.price} ${item.currency}
+            <br><a href="${item.link}" target="_blank">View</a>
+          </li>`;
+        });
+        html += `</ul>`;
+        document.getElementById('results').innerHTML = html;
+        document.getElementById('aiSuggestBtn').style.display = "inline-block";
+      } else {
+        document.getElementById('results').innerHTML = "<em>No results found or site blocks scraping for this query.</em>";
+        document.getElementById('aiSuggestBtn').style.display = "none";
+      }
+    };
+
+    document.getElementById('aiSuggestBtn').onclick = async function() {
+      document.getElementById('aiSuggestion').innerText = "AI is analyzing...";
+      const resp = await fetch('/ai-suggest', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({results: lastResults})
+      });
+      const data = await resp.json();
+      document.getElementById('aiSuggestion').innerText = data.suggestion || "No suggestion.";
+    };
+  </script>
+</body>
+</html>
